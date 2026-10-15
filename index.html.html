@@ -1,0 +1,405 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NearMe — Urban Field Guide</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background: #F4F1E8;
+      color: #173F35;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .place-card {
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .place-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px #173f3515;
+    }
+
+    .category-card:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 2px solid #C8643D;
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen antialiased">
+
+<header class="mx-auto max-w-7xl px-5 py-5 sm:px-8">
+  <nav class="flex items-center justify-between border-b border-[#D9DCCF] pb-5">
+    <a href="#" class="flex items-center gap-3 no-underline">
+      <span class="grid h-11 w-11 place-items-center rounded-xl bg-[#173F35] text-2xl text-white">↗</span>
+      <span>
+        <span class="block text-xl font-black tracking-tight">near.me</span>
+        <span class="block text-[10px] font-semibold tracking-[0.2em] text-[#718077]">YOUR URBAN FIELD GUIDE</span>
+      </span>
+    </a>
+    <span class="hidden rounded-full border border-[#D9DCCF] px-4 py-2 text-xs font-semibold sm:block">MADE FOR THE CURIOUS</span>
+  </nav>
+</header>
+
+<main class="mx-auto max-w-7xl px-5 pb-16 pt-8 sm:px-8 sm:pt-14">
+
+  <section class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+    <div>
+      <p class="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-[#C8643D]">● YOUR CITY, REIMAGINED</p>
+      <h1 class="max-w-3xl text-5xl font-black leading-[1.05] tracking-tight sm:text-7xl">
+        Good places are
+        <span class="font-serif font-normal italic text-[#C8643D]">closer</span>
+        than you think.
+      </h1>
+    </div>
+    <p class="max-w-md pb-2 leading-7 text-[#718077]">
+      Skip the endless searching. Find little places, everyday essentials and unexpected stops around you.
+    </p>
+  </section>
+
+  <section class="mt-12 grid overflow-hidden rounded-3xl border border-[#E1E1D7] bg-white shadow-lg lg:grid-cols-[0.8fr_1.2fr]">
+
+    <div class="flex flex-col justify-between bg-[#173F35] p-6 text-white sm:p-9">
+      <div>
+        <p class="text-xs font-bold tracking-[0.2em] text-[#B9D0B9]">THE FIELD GUIDE / 01</p>
+        <h2 class="mt-5 text-3xl font-bold leading-tight sm:text-4xl">Your next favourite place starts here.</h2>
+        <p class="mt-4 text-sm leading-6 text-[#D0DED2]">Pick a destination. Choose what you need. Let the city surprise you.</p>
+      </div>
+      <p class="mt-10 border-t border-white/20 pt-5 text-xs text-[#B9D0B9]">POWERED BY OPENSTREETMAP GEOGRAPHIC DATA</p>
+    </div>
+
+    <div class="p-6 sm:p-9">
+      <form id="searchForm" class="space-y-6">
+        <div>
+          <label for="location" class="mb-3 block text-xs font-bold uppercase tracking-widest text-[#718077]">01 / Your destination</label>
+          <input id="location" type="text" required
+            placeholder="Christ University, Bengaluru"
+            class="w-full rounded-xl border border-[#D9DCCF] bg-[#FAFAF6] px-4 py-4 text-sm outline-none focus:border-[#173F35]">
+        </div>
+
+        <div>
+          <label for="category" class="mb-3 block text-xs font-bold uppercase tracking-widest text-[#718077]">02 / What are you looking for?</label>
+          <select id="category"
+            class="w-full rounded-xl border border-[#D9DCCF] bg-[#FAFAF6] px-4 py-4 text-sm outline-none focus:border-[#173F35]">
+            <option value="cafe">☕ Cafés & coffee stops</option>
+            <option value="pharmacy">✚ Pharmacies</option>
+            <option value="atm">▣ ATMs</option>
+            <option value="bus_stop">↗ Bus stops</option>
+          </select>
+        </div>
+
+        <button id="searchButton" type="submit"
+          class="flex w-full items-center justify-between rounded-xl bg-[#C8643D] px-5 py-4 text-sm font-bold text-white transition hover:bg-[#AE5030] disabled:cursor-wait disabled:opacity-60">
+          <span id="buttonText">Discover nearby places</span>
+          <span>↗</span>
+        </button>
+      </form>
+
+      <p id="message" role="status" aria-live="polite" class="mt-5 text-sm leading-6 text-[#718077]">
+        Your next discovery is just a search away.
+      </p>
+    </div>
+  </section>
+
+  <section class="mt-16">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.18em] text-[#C8643D]">AROUND THE CORNER</p>
+        <h2 class="mt-2 text-3xl font-black tracking-tight">What do you need today?</h2>
+      </div>
+      <p class="text-sm text-[#718077]">Four ways to explore.</p>
+    </div>
+
+    <div class="mt-7 grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <button type="button" data-category="cafe" class="category-card rounded-2xl border border-[#E1E1D7] bg-white p-5 text-left transition hover:-translate-y-1 hover:border-[#173F35] sm:p-6">
+        <span class="text-3xl">☕</span>
+        <span class="mt-8 block text-lg font-bold">Coffee breaks</span>
+        <span class="mt-1 block text-xs text-[#718077]">Cafés & coffee stops</span>
+        <span class="mt-4 block text-sm text-[#C8643D]">Explore ↗</span>
+      </button>
+
+      <button type="button" data-category="pharmacy" class="category-card rounded-2xl border border-[#E1E1D7] bg-white p-5 text-left transition hover:-translate-y-1 hover:border-[#173F35] sm:p-6">
+        <span class="text-3xl">✚</span>
+        <span class="mt-8 block text-lg font-bold">Essentials</span>
+        <span class="mt-1 block text-xs text-[#718077]">Pharmacies nearby</span>
+        <span class="mt-4 block text-sm text-[#C8643D]">Explore ↗</span>
+      </button>
+
+      <button type="button" data-category="atm" class="category-card rounded-2xl border border-[#E1E1D7] bg-white p-5 text-left transition hover:-translate-y-1 hover:border-[#173F35] sm:p-6">
+        <span class="text-3xl">▣</span>
+        <span class="mt-8 block text-lg font-bold">Cash points</span>
+        <span class="mt-1 block text-xs text-[#718077]">ATMs & cash access</span>
+        <span class="mt-4 block text-sm text-[#C8643D]">Explore ↗</span>
+      </button>
+
+      <button type="button" data-category="bus_stop" class="category-card rounded-2xl border border-[#E1E1D7] bg-white p-5 text-left transition hover:-translate-y-1 hover:border-[#173F35] sm:p-6">
+        <span class="text-3xl">↗</span>
+        <span class="mt-8 block text-lg font-bold">Get moving</span>
+        <span class="mt-1 block text-xs text-[#718077]">Nearby bus stops</span>
+        <span class="mt-4 block text-sm text-[#C8643D]">Explore ↗</span>
+      </button>
+    </div>
+  </section>
+
+  <section id="results" class="mt-12 space-y-5"></section>
+
+  <footer class="mt-16 flex flex-col justify-between gap-3 border-t border-[#D9DCCF] pt-6 text-xs text-[#718077] sm:flex-row">
+    <span>NEAR.ME — A LITTLE CLOSER TO EVERYWHERE.</span>
+    <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4">
+      Geographic data © OpenStreetMap contributors · Powered by <a href="https://www.geoapify.com/" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4">Geoapify</a>
+    </a>
+  </footer>
+
+</main>
+
+<script>
+/*
+  Near.me — Geoapify Places API version
+  1) Create a Geoapify API key at https://myprojects.geoapify.com/
+  2) Replace PASTE_YOUR_GEOAPIFY_API_KEY_HERE below with your key.
+*/
+const GEOAPIFY_API_KEY = "b3bc629e8e614b099fe08948d1947be4";
+const MAX_RESULTS = 75;
+const SEARCH_RADIUS_METERS = 3000;
+
+const searchForm = document.getElementById("searchForm");
+const locationInput = document.getElementById("location");
+const categorySelect = document.getElementById("category");
+const message = document.getElementById("message");
+const resultsContainer = document.getElementById("results");
+const searchButton = document.getElementById("searchButton");
+const buttonText = document.getElementById("buttonText");
+
+const categoryFilters = {
+  cafe: "catering.cafe",
+  pharmacy: "healthcare.pharmacy",
+  atm: "service.financial.atm",
+  bus_stop: "public_transport.bus"
+};
+
+let currentSearch = 0;
+
+function showMessage(text, type = "neutral") {
+  const colors = {
+    neutral: "text-[#718077]",
+    loading: "text-[#C8643D]",
+    success: "text-emerald-700",
+    error: "text-red-700",
+    warning: "text-amber-700"
+  };
+  message.textContent = text;
+  message.className = `mt-5 text-sm leading-6 ${colors[type] || colors.neutral}`;
+}
+
+function renderPlaces(places) {
+  resultsContainer.replaceChildren();
+
+  const header = document.createElement("div");
+  header.className = "flex flex-wrap items-end justify-between gap-3";
+
+  const title = document.createElement("div");
+  title.innerHTML =
+    '<p class="text-xs font-bold uppercase tracking-widest text-[#C8643D]">YOUR FIELD GUIDE / RESULTS</p>';
+
+  const heading = document.createElement("h2");
+  heading.className = "mt-2 text-3xl font-black tracking-tight";
+  heading.textContent = "Places worth finding.";
+  title.appendChild(heading);
+
+  const count = document.createElement("span");
+  count.className = "rounded-full border border-[#D9DCCF] px-3 py-2 text-xs font-semibold text-[#718077]";
+  count.textContent = `${places.length} places found (maximum ${MAX_RESULTS})`;
+
+  header.append(title, count);
+  resultsContainer.appendChild(header);
+
+  if (!places.length) {
+    const empty = document.createElement("div");
+    empty.className = "rounded-2xl border border-[#E1E1D7] bg-white p-8";
+    empty.textContent = "No mapped places found within 3 km. Try another location or category.";
+    resultsContainer.appendChild(empty);
+    return;
+  }
+
+  const list = document.createElement("div");
+  list.className = "grid gap-4 sm:grid-cols-2 lg:grid-cols-3";
+
+  places.forEach((feature, index) => {
+    const props = feature.properties || {};
+    const name = props.name || props.address_line1 || "Unnamed place";
+    const lat = Number(props.lat);
+    const lon = Number(props.lon);
+
+    const card = document.createElement("article");
+    card.className = "place-card rounded-2xl border border-[#E1E1D7] bg-white p-5";
+
+    const number = document.createElement("p");
+    number.className = "text-xs font-bold tracking-widest text-[#C8643D]";
+    number.textContent = `DISCOVERY / ${String(index + 1).padStart(2, "0")}`;
+
+    const placeName = document.createElement("h3");
+    placeName.className = "mt-4 break-words text-lg font-bold";
+    placeName.textContent = name;
+
+    const details = document.createElement("p");
+    details.className = "mt-2 text-sm leading-6 text-[#718077]";
+    details.textContent = props.formatted || props.address_line2 ||
+      props.address_line1 || props.categories?.[0] || "Location available";
+
+    card.append(number, placeName, details);
+
+    if (Number.isFinite(lat) && Number.isFinite(lon)) {
+      const link = document.createElement("a");
+      link.href = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=18/${lat}/${lon}`;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.className = "mt-5 inline-block text-sm font-semibold text-[#C8643D] underline underline-offset-4";
+      link.textContent = "Explore this place ↗";
+      card.appendChild(link);
+    }
+
+    list.appendChild(card);
+  });
+
+  resultsContainer.appendChild(list);
+}
+
+async function fetchJson(url) {
+  let response;
+  try {
+    response = await fetch(url);
+  } catch (error) {
+    throw new Error("Network connection failed. Check your internet connection, then try again.");
+  }
+
+  if (!response.ok) {
+    if (response.status === 401 || response.status === 403) {
+      throw new Error("Geoapify rejected the API key. Check that you copied the key correctly.");
+    }
+    if (response.status === 429) {
+      throw new Error("Geoapify request limit reached. Please wait and try again.");
+    }
+    throw new Error(`Geoapify service error (HTTP ${response.status}). Please try again shortly.`);
+  }
+
+  return response.json();
+}
+
+async function searchPlaces() {
+  const location = locationInput.value.trim();
+  const category = categorySelect.value;
+  const searchId = ++currentSearch;
+
+  if (!location) {
+    showMessage("Please enter a destination first.", "error");
+    locationInput.focus();
+    return;
+  }
+
+  if (!GEOAPIFY_API_KEY || GEOAPIFY_API_KEY === "PASTE_YOUR_GEOAPIFY_API_KEY_HERE") {
+    showMessage("Add your Geoapify API key in the code first. See the setup instructions below the download link.", "error");
+    return;
+  }
+
+  searchButton.disabled = true;
+  buttonText.textContent = "Exploring...";
+  resultsContainer.replaceChildren();
+  showMessage("Finding your destination...", "loading");
+
+  try {
+    const geoParams = new URLSearchParams({
+      text: location,
+      format: "json",
+      limit: "1",
+      apiKey: GEOAPIFY_API_KEY
+    });
+    const geoData = await fetchJson(
+      `https://api.geoapify.com/v1/geocode/search?${geoParams.toString()}`
+    );
+    if (searchId !== currentSearch) return;
+
+    const geoResult = geoData.results?.[0];
+    if (!geoResult || !Number.isFinite(Number(geoResult.lat)) ||
+        !Number.isFinite(Number(geoResult.lon))) {
+      throw new Error("Location not found. Try a more specific address or place name.");
+    }
+
+    const lat = Number(geoResult.lat);
+    const lon = Number(geoResult.lon);
+
+    showMessage("Discovering places within 3 km...", "loading");
+
+    const placeParams = new URLSearchParams({
+      categories: categoryFilters[category],
+      filter: `circle:${lon},${lat},${SEARCH_RADIUS_METERS}`,
+      bias: `proximity:${lon},${lat}`,
+      limit: String(MAX_RESULTS),
+      lang: "en",
+      apiKey: GEOAPIFY_API_KEY
+    });
+
+    const placesData = await fetchJson(
+      `https://api.geoapify.com/v2/places?${placeParams.toString()}`
+    );
+    if (searchId !== currentSearch) return;
+
+    const features = Array.isArray(placesData.features) ? placesData.features : [];
+    const uniquePlaces = [
+      ...new Map(features.map(feature => {
+        const props = feature.properties || {};
+        const key = props.place_id || `${props.name || props.address_line1 || "unnamed"}-${props.lat}-${props.lon}`;
+        return [key, feature];
+      })).values()
+    ].slice(0, MAX_RESULTS);
+
+    renderPlaces(uniquePlaces);
+
+    if (uniquePlaces.length) {
+      showMessage(`Showing ${uniquePlaces.length} places within 3 km.`, "success");
+    } else {
+      showMessage("No mapped places found within 3 km. Try another category or destination.", "warning");
+    }
+  } catch (error) {
+    if (searchId !== currentSearch) return;
+    console.error("Near.me search failed:", error);
+    showMessage(error.message || "Something went wrong. Please try again.", "error");
+  } finally {
+    if (searchId === currentSearch) {
+      searchButton.disabled = false;
+      buttonText.textContent = "Discover nearby places";
+    }
+  }
+}
+
+searchForm.addEventListener("submit", function(event) {
+  event.preventDefault();
+  searchPlaces();
+});
+
+locationInput.addEventListener("input", function() {
+  showMessage("Enter your destination and discover what's nearby.");
+});
+
+categorySelect.addEventListener("change", function() {
+  showMessage(`Selected: ${categorySelect.options[categorySelect.selectedIndex].text}.`);
+});
+
+document.querySelectorAll(".category-card").forEach(card => {
+  card.addEventListener("click", function() {
+    categorySelect.value = card.dataset.category;
+    categorySelect.dispatchEvent(new Event("change", { bubbles: true }));
+    searchForm.requestSubmit();
+  });
+});
+</script>
+
+</body>
+</html>
